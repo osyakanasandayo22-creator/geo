@@ -2620,7 +2620,7 @@
       mpMatchmakingUnsub = null;
       if (mpSignalUnsub && mpMyUid) {
         try {
-          versusDb.ref('matchmaking/signals/' + mpMyUid).off('value', mpSignalUnsub);
+          versusDb.ref('matchSignals/' + mpMyUid).off('value', mpSignalUnsub);
         } catch (e2) {
           console.error(e2);
         }
@@ -3283,7 +3283,7 @@
       const raw = snapVal || {};
       const entries = Object.keys(raw)
         .filter(function (k) {
-          return k !== 'signals' && raw[k] && typeof raw[k] === 'object';
+          return raw[k] && typeof raw[k] === 'object';
         })
         .map(function (uid) {
           const n = raw[uid];
@@ -3319,8 +3319,8 @@
       updates['rooms/' + rid] = roomPayload;
       updates['matchmaking/' + a.uid] = null;
       updates['matchmaking/' + b.uid] = null;
-      updates['matchmaking/signals/' + a.uid] = { roomId: rid };
-      updates['matchmaking/signals/' + b.uid] = { roomId: rid };
+      updates['matchSignals/' + a.uid] = { roomId: rid };
+      updates['matchSignals/' + b.uid] = { roomId: rid };
       versusDb
         .ref()
         .update(updates)
@@ -3330,6 +3330,9 @@
         .catch(function (e) {
           console.error('マッチング成立更新エラー', e);
           mpPairingBusy = false;
+          alert(
+            'マッチングに失敗しました（権限または通信）。Realtime Database のルールで matchmaking / matchSignals / rooms が書き込み可能か確認してください。詳細はブラウザのコンソール（F12）を参照。'
+          );
         });
     }
 
@@ -3372,7 +3375,7 @@
       mpMyUid = uid;
       if (mpSignalUnsub) {
         try {
-          versusDb.ref('matchmaking/signals/' + uid).off('value', mpSignalUnsub);
+          versusDb.ref('matchSignals/' + uid).off('value', mpSignalUnsub);
         } catch (e) {
           console.error(e);
         }
@@ -3380,13 +3383,13 @@
       mpSignalUnsub = function (snap) {
         const v = snap.val();
         if (v && v.roomId) {
-          versusDb.ref('matchmaking/signals/' + uid).remove().catch(function (e) {
+          versusDb.ref('matchSignals/' + uid).remove().catch(function (e) {
             console.error(e);
           });
           mpAttachRoomById(String(v.roomId));
         }
       };
-      versusDb.ref('matchmaking/signals/' + uid).on('value', mpSignalUnsub);
+      versusDb.ref('matchSignals/' + uid).on('value', mpSignalUnsub);
     }
 
     function mpStartMatchmakingFlow() {
