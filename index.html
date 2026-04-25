@@ -2,7 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+  />
+  <meta name="format-detection" content="telephone=no" />
   <title>Geo Explorer — ジオクイズ（Mapillary + OSM）</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,6 +43,11 @@
       --accent-soft: rgba(165, 166, 255, 0.14);
       --mint: #7dd3c0;
       --mint-soft: rgba(125, 211, 192, 0.12);
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     html, body {
@@ -859,6 +868,7 @@
       padding-top: max(var(--gutter), env(safe-area-inset-top, 0px));
       padding-bottom: max(var(--gutter), env(safe-area-inset-bottom, 0px));
       overflow: auto;
+      overscroll-behavior-y: contain;
       transition: opacity 0.4s ease, visibility 0.4s ease;
     }
     .home-screen.home-screen--hidden {
@@ -867,6 +877,36 @@
       pointer-events: none;
       z-index: 0;
     }
+
+    /* スマホ：ホームでピンチ拡大・テキスト選択・長押しメニューを抑える（入力は選択可） */
+    @media (max-width: 768px) {
+      #homeScreen.home-screen {
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #homeScreen.home-screen .home-screen__content,
+      #homeScreen.home-screen .home-screen__content * {
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #homeScreen.home-screen .home-screen__content input,
+      #homeScreen.home-screen .home-screen__content textarea,
+      #homeScreen.home-screen .home-screen__content select {
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+      #homeScreen.home-screen .btn-play-mode,
+      #homeScreen.home-screen .btn-start-game,
+      #homeScreen.home-screen .btn-secondary,
+      #homeScreen.home-screen .btn-cancel-matchmaking,
+      #homeScreen.home-screen .home-seg label {
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+
     .home-screen__bg {
       position: absolute;
       inset: 0;
