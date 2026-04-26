@@ -912,7 +912,6 @@
         user-select: auto;
       }
       #homeScreen.home-screen .home-hero-card,
-      #homeScreen.home-screen .home-foot-fab,
       #homeScreen.home-screen .btn-play-mode,
       #homeScreen.home-screen .btn-start-game,
       #homeScreen.home-screen .btn-secondary,
@@ -1324,53 +1323,10 @@
       display: flex;
       flex-wrap: wrap;
       align-items: flex-end;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: var(--space-2);
       margin-top: auto;
       padding-top: var(--space-3);
-    }
-    .home-footer-fabs {
-      display: flex;
-      align-items: flex-end;
-      gap: 0.65rem;
-    }
-    .home-foot-fab {
-      display: inline-flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.45rem 0.8rem;
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(0, 0, 0, 0.38);
-      color: rgba(248, 250, 252, 0.92);
-      font-family: var(--font-ui);
-      font-size: 0.8125rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.18s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .home-foot-fab:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-    .home-foot-fab:focus-visible {
-      outline: 2px solid var(--mint);
-      outline-offset: 2px;
-    }
-    .home-foot-fab__orbit {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .home-foot-fab__orbit svg {
-      width: 18px;
-      height: 18px;
-    }
-    .home-foot-fab__label {
-      white-space: nowrap;
     }
     .home-footer-quote {
       display: flex;
@@ -1538,44 +1494,10 @@
         padding-bottom: max(0.35rem, env(safe-area-inset-bottom, 0px));
       }
       #homeScreen .home-footer-quote {
-        display: none;
-      }
-      #homeScreen .home-footer-fabs {
+        margin-inline: auto;
+        max-width: min(22rem, 100%);
+        text-align: center;
         justify-content: center;
-        gap: clamp(2rem, 12vw, 3.5rem);
-      }
-      #homeScreen .home-foot-fab {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0;
-        border: none;
-        background: transparent;
-      }
-      #homeScreen .home-foot-fab:active {
-        transform: scale(0.97);
-      }
-      #homeScreen .home-foot-fab__orbit {
-        width: 3.65rem;
-        height: 3.65rem;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.48);
-        backdrop-filter: blur(14px) saturate(1.1);
-        -webkit-backdrop-filter: blur(14px) saturate(1.1);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        box-shadow:
-          0 4px 24px rgba(0, 0, 0, 0.45),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      }
-      #homeScreen .home-foot-fab__orbit svg {
-        width: 22px;
-        height: 22px;
-      }
-      #homeScreen .home-foot-fab__label {
-        font-size: 0.6875rem;
-        font-weight: 500;
-        color: rgba(248, 250, 252, 0.92);
-        letter-spacing: 0.02em;
       }
     }
     .home-versus-block {
@@ -2152,25 +2074,6 @@
         </div>
       </div>
       <footer class="home-screen__footer">
-        <div class="home-footer-fabs">
-          <button type="button" class="home-foot-fab" id="btnHomeRanking">
-            <span class="home-foot-fab__orbit" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 20V10M10 20V4M16 12v8M22 20V8" />
-              </svg>
-            </span>
-            <span class="home-foot-fab__label">ランキング</span>
-          </button>
-          <button type="button" class="home-foot-fab" id="btnHomeSettings">
-            <span class="home-foot-fab__orbit" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
-                <circle cx="12" cy="12" r="3.2" />
-                <path d="M12 1v2.2M12 20.8V23M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M1 12h2.2M20.8 12H23M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
-              </svg>
-            </span>
-            <span class="home-foot-fab__label">設定</span>
-          </button>
-        </div>
         <p class="home-footer-quote">
           <svg class="home-footer-quote__globe" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
             <circle cx="12" cy="12" r="10" />
@@ -4523,16 +4426,6 @@
     if (el('btnAuthLogoutHome')) {
       el('btnAuthLogoutHome').addEventListener('click', function () {
         mpSignOut();
-      });
-    }
-    if (el('btnHomeSettings')) {
-      el('btnHomeSettings').addEventListener('click', function () {
-        alert('設定画面は準備中です。');
-      });
-    }
-    if (el('btnHomeRanking')) {
-      el('btnHomeRanking').addEventListener('click', function () {
-        alert('ランキングは準備中です。');
       });
     }
     el('btnVersusFinalHome').addEventListener('click', versusLeaveToHome);
