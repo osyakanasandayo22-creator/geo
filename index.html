@@ -47,6 +47,8 @@
       --accent-soft: rgba(165, 166, 255, 0.14);
       --mint: #7dd3c0;
       --mint-soft: rgba(125, 211, 192, 0.12);
+      /* Mapillary コントロール用：右下マップパネル左端までのクリアランス */
+      --mly-clear-right: calc(0.75rem + var(--gutter) + min(22rem, calc(100vw - 2 * var(--gutter))));
     }
 
     html {
@@ -367,27 +369,37 @@
       color: #f8fafc;
       flex-shrink: 0;
     }
+    /* 視点ヒント用の小マーカー（大きなアイコンは使わない） */
+    .game-axis-hint__mark {
+      flex-shrink: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(125, 211, 192, 0.85);
+      box-shadow: 0 0 0 2px rgba(125, 211, 192, 0.2);
+    }
     @media (max-width: 768px) {
       .game-axis-hints {
         display: none;
       }
     }
 
-    /* Mapillary 右下：ズームとコンパス（ベアリング）の縦位置をずらして重なりを解消 */
-    #mlyViewer .mapillary-zoom-container {
-      bottom: 118px !important;
-      right: max(14px, env(safe-area-inset-right, 0px)) !important;
-    }
-    #mlyViewer .mapillary-zoom-compact.mapillary-zoom-container {
-      bottom: 96px !important;
-    }
+    /* Mapillary 右下：パネル幅ぶん left 方向へ寄せ、下はコンパス→上にズームの順 */
     #mlyViewer .mapillary-bearing-indicator-container {
-      bottom: 22px !important;
-      right: max(12px, env(safe-area-inset-right, 0px)) !important;
+      bottom: max(0.75rem, env(safe-area-inset-bottom, 0px)) !important;
+      right: max(var(--mly-clear-right), env(safe-area-inset-right, 0px)) !important;
     }
     #mlyViewer .mapillary-bearing-indicator-container.mapillary-bearing-compact {
-      bottom: 12px !important;
-      right: max(8px, env(safe-area-inset-right, 0px)) !important;
+      bottom: max(0.5rem, env(safe-area-inset-bottom, 0px)) !important;
+      right: max(var(--mly-clear-right), env(safe-area-inset-right, 0px)) !important;
+    }
+    #mlyViewer .mapillary-zoom-container {
+      bottom: calc(max(0.75rem, env(safe-area-inset-bottom, 0px)) + 3.35rem) !important;
+      right: max(var(--mly-clear-right), env(safe-area-inset-right, 0px)) !important;
+    }
+    #mlyViewer .mapillary-zoom-compact.mapillary-zoom-container {
+      bottom: calc(max(0.5rem, env(safe-area-inset-bottom, 0px)) + 3.1rem) !important;
+      right: max(var(--mly-clear-right), env(safe-area-inset-right, 0px)) !important;
     }
 
     /* --- 右下：ミニマップ＋説明＋推測（1 パネル） --- */
@@ -395,7 +407,7 @@
       position: absolute;
       right: var(--gutter);
       bottom: var(--gutter);
-      z-index: 40;
+      z-index: 120;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -612,7 +624,7 @@
       width: auto;
       height: auto;
       max-height: calc(100dvh - 4.5rem);
-      z-index: 55;
+      z-index: 130;
       flex-direction: column;
       align-items: stretch;
       gap: 12px;
@@ -753,6 +765,15 @@
         flex: 1 1 0;
         min-height: 0;
         width: 100%;
+      }
+      /* マップはパノラマ下に回るため、コントロールは従来どおり右下でよい */
+      #mlyViewer .mapillary-bearing-indicator-container,
+      #mlyViewer .mapillary-bearing-indicator-container.mapillary-bearing-compact {
+        right: max(12px, env(safe-area-inset-right, 0px)) !important;
+      }
+      #mlyViewer .mapillary-zoom-container,
+      #mlyViewer .mapillary-zoom-compact.mapillary-zoom-container {
+        right: max(14px, env(safe-area-inset-right, 0px)) !important;
       }
       .floating-dock {
         position: static;
@@ -2440,12 +2461,7 @@
             <span>移動</span>
           </div>
           <div class="game-axis-hint">
-            <span class="game-axis-hint__kbd" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M5 9l7-5 7 5v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z" />
-                <path d="M9 22V12h6v10" />
-              </svg>
-            </span>
+            <span class="game-axis-hint__mark" aria-hidden="true"></span>
             <span>ドラッグで視点移動</span>
           </div>
         </div>
