@@ -68,8 +68,9 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* --- シェル --- */
+    /* --- シェル（ヘッダーは absolute でステージ上に重ねる） --- */
     .game-viewport {
+      position: relative;
       height: 100%;
       min-height: 100dvh;
       display: flex;
@@ -88,19 +89,27 @@
       box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
     }
 
-    /* --- プレイ画面ヘッダー（GEO EXPLORER 風） --- */
+    /* --- プレイ画面ヘッダー（パノラマ上に半透明＋すりガラス） --- */
     .game-header {
-      flex-shrink: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 40;
+      flex-shrink: 0;
       padding: 0.65rem var(--gutter);
       padding-top: max(0.65rem, env(safe-area-inset-top, 0px));
-      border-bottom: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       background: linear-gradient(
         180deg,
-        rgba(4, 6, 12, 0.92) 0%,
-        rgba(8, 10, 18, 0.78) 55%,
+        rgba(4, 6, 12, 0.52) 0%,
+        rgba(6, 10, 18, 0.38) 45%,
+        rgba(8, 10, 18, 0.12) 85%,
         rgba(8, 10, 18, 0) 100%
       );
+      backdrop-filter: blur(16px) saturate(1.12);
+      -webkit-backdrop-filter: blur(16px) saturate(1.12);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
     }
     .game-header__inner {
       max-width: var(--grid-max);
@@ -598,7 +607,7 @@
       position: fixed;
       left: var(--gutter);
       right: var(--gutter);
-      top: 4rem;
+      top: max(5.25rem, calc(env(safe-area-inset-top, 0px) + 4.25rem));
       bottom: var(--gutter);
       width: auto;
       height: auto;
@@ -642,7 +651,7 @@
       position: fixed;
       left: 0;
       right: 0;
-      top: 56px;
+      top: max(4.5rem, calc(env(safe-area-inset-top, 0px) + 3.25rem));
       bottom: 0;
       z-index: 58;
       display: flex;
@@ -806,7 +815,7 @@
         position: fixed;
         left: var(--gutter);
         right: var(--gutter);
-        top: max(3.75rem, calc(env(safe-area-inset-top, 0px) + 3rem));
+        top: max(5.25rem, calc(env(safe-area-inset-top, 0px) + 4.25rem));
         bottom: max(var(--gutter), env(safe-area-inset-bottom, 0px));
         width: auto;
         max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 4rem);
@@ -823,7 +832,7 @@
         display: none !important;
       }
       .map-reveal-overlay {
-        top: max(3rem, env(safe-area-inset-top, 0px));
+        top: max(4.5rem, calc(env(safe-area-inset-top, 0px) + 3.25rem));
         padding-top: min(6dvh, 3rem);
       }
     }
@@ -4515,25 +4524,27 @@
         return a.uid < b.uid ? -1 : 1;
       });
       if (entries.length < 2) return;
+      /* キュー先頭のクライアントだけが、待機者を先頭から2人ずつまとめてルーム化（1回の update で複数部屋可） */
       if (entries[0].uid !== myUid) return;
-      const a = entries[0];
-      const b = entries[1];
       mpPairingBusy = true;
-      const rid = 'r_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
-      const roomPayload = mpInitialRoomPayload(
-        a.uid,
-        a.displayName,
-        a.photoURL,
-        b.uid,
-        b.displayName,
-        b.photoURL
-      );
       const updates = {};
-      updates['rooms/' + rid] = roomPayload;
-      updates['matchmaking/' + a.uid] = null;
-      updates['matchmaking/' + b.uid] = null;
-      updates['matchSignals/' + a.uid] = { roomId: rid };
-      updates['matchSignals/' + b.uid] = { roomId: rid };
+      for (let i = 0; i + 1 < entries.length; i += 2) {
+        const a = entries[i];
+        const b = entries[i + 1];
+        const rid = 'r_' + Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 10);
+        updates['rooms/' + rid] = mpInitialRoomPayload(
+          a.uid,
+          a.displayName,
+          a.photoURL,
+          b.uid,
+          b.displayName,
+          b.photoURL
+        );
+        updates['matchmaking/' + a.uid] = null;
+        updates['matchmaking/' + b.uid] = null;
+        updates['matchSignals/' + a.uid] = { roomId: rid };
+        updates['matchSignals/' + b.uid] = { roomId: rid };
+      }
       versusDb
         .ref()
         .update(updates)
