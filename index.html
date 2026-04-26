@@ -88,13 +88,19 @@
       box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
     }
 
-    /* --- ヘッダー（グリッド幅に収める） --- */
+    /* --- プレイ画面ヘッダー（GEO EXPLORER 風） --- */
     .game-header {
       flex-shrink: 0;
       z-index: 40;
-      padding: var(--space-2) var(--gutter);
-      padding-top: max(var(--space-2), env(safe-area-inset-top, 0px));
-      border-bottom: 1px solid var(--border);
+      padding: 0.65rem var(--gutter);
+      padding-top: max(0.65rem, env(safe-area-inset-top, 0px));
+      border-bottom: none;
+      background: linear-gradient(
+        180deg,
+        rgba(4, 6, 12, 0.92) 0%,
+        rgba(8, 10, 18, 0.78) 55%,
+        rgba(8, 10, 18, 0) 100%
+      );
     }
     .game-header__inner {
       max-width: var(--grid-max);
@@ -111,69 +117,168 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 0.35rem;
+      gap: 0.5rem;
       flex: 1;
       min-width: 0;
     }
     .header-brand {
       display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+    .header-brand__mark {
+      flex-shrink: 0;
+      width: 1.75rem;
+      height: 1.75rem;
+      color: rgba(248, 250, 252, 0.95);
+      opacity: 0.95;
+    }
+    .header-brand__mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .header-brand__text {
+      display: flex;
       flex-direction: column;
-      gap: 0.125rem;
+      gap: 0.1rem;
       min-width: 0;
     }
     .header-brand__title {
-      font-family: var(--font-display);
-      font-size: 0.8125rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+      font-family: var(--font-home-condensed), var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-primary);
+      color: #f8fafc;
+      line-height: 1;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
     }
     .header-brand__note {
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       font-weight: 500;
-      color: var(--text-muted);
-      line-height: 1.4;
-      max-width: min(28rem, 52vw);
+      color: rgba(248, 250, 252, 0.55);
+      line-height: 1.35;
+      max-width: min(22rem, 56vw);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .header-user-cluster {
+      display: none;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .header-user-cluster.header-user-cluster--visible {
+      display: flex;
+    }
+    .header-auth-menu {
+      position: relative;
+    }
+    .header-auth-menu > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.35rem 0.2rem 0.2rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .header-auth-menu > summary::-webkit-details-marker {
+      display: none;
+    }
+    .header-auth-menu__chev {
+      font-size: 0.55rem;
+      color: rgba(248, 250, 252, 0.55);
+      margin-right: 0.15rem;
+    }
+    .header-auth-menu__panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 9rem;
+      padding: 0.35rem;
+      border-radius: var(--radius-md);
+      background: rgba(12, 14, 22, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+      z-index: 50;
+    }
+    .btn-game-burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      width: 2.25rem;
+      height: 2.25rem;
+      padding: 0;
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .btn-game-burger span {
+      display: block;
+      height: 2px;
+      width: 14px;
+      margin: 0 auto;
+      border-radius: 1px;
+      background: rgba(248, 250, 252, 0.88);
+    }
+    .btn-game-burger:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
     .header-stats {
       display: flex;
       align-items: stretch;
-      gap: var(--space-2);
+      gap: 0;
       flex-shrink: 0;
+      padding: 0.35rem 0.5rem;
+      border-radius: var(--radius-lg);
+      background: rgba(8, 10, 18, 0.72);
+      backdrop-filter: blur(16px) saturate(1.1);
+      -webkit-backdrop-filter: blur(16px) saturate(1.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
     }
     .stat-chip {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
-      padding: var(--space-1) var(--space-2);
-      border-radius: var(--radius-md);
-      background: rgba(0, 0, 0, 0.28);
-      border: 1px solid var(--border);
-      min-width: 5.5rem;
+      padding: 0.25rem 0.85rem;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      min-width: 4.75rem;
+    }
+    .stat-chip:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
     .stat-chip__label {
       font-family: var(--font-display);
-      font-size: 0.5625rem;
+      font-size: 0.5rem;
       font-weight: 600;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
+      letter-spacing: 0.18em;
+      color: rgba(248, 250, 252, 0.45);
+      text-transform: uppercase;
     }
     .stat-chip__value {
       font-family: var(--font-display);
-      font-size: 1.375rem;
+      font-size: 1.25rem;
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       line-height: 1.1;
-      margin-top: 0.125rem;
-      color: var(--text-primary);
+      margin-top: 0.15rem;
+      color: #f8fafc;
     }
     .stat-chip--score .stat-chip__value {
-      color: var(--mint);
+      color: #5eead4;
     }
 
     /* --- メイン：画像が画面いっぱい（ヘッダー下） --- */
@@ -217,7 +322,103 @@
       z-index: 2;
     }
 
-    /* --- 右下ドック：本家に近いミニマップ＋操作 --- */
+    /* --- パノラマ上の装飾（操作は Mapillary 本体） --- */
+    .game-pan-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: max(5rem, calc(env(safe-area-inset-top, 0px) + 3.5rem)) 0 18vh;
+    }
+    .game-pan-overlay__transport {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+    .game-pan-overlay__transport button {
+      pointer-events: none;
+      width: 1.65rem;
+      height: 1.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(248, 250, 252, 0.85);
+      padding: 0;
+    }
+    .game-pan-overlay__mid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .game-pan-overlay__uturn {
+      color: rgba(248, 250, 252, 0.55);
+      transform: scaleX(-1);
+    }
+    .game-pan-overlay__chevron {
+      font-size: 2.25rem;
+      line-height: 1;
+      color: rgba(248, 250, 252, 0.92);
+      filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.5));
+    }
+    .game-axis-hints {
+      position: absolute;
+      left: var(--gutter);
+      bottom: var(--gutter);
+      z-index: 35;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+      max-width: min(11rem, 38vw);
+    }
+    .game-axis-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.4rem 0.55rem;
+      border-radius: var(--radius-md);
+      background: rgba(0, 0, 0, 0.48);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.625rem;
+      font-weight: 500;
+      color: rgba(248, 250, 252, 0.82);
+      line-height: 1.35;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+    .game-axis-hint__kbd {
+      font-family: var(--font-display);
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.15rem 0.35rem;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #f8fafc;
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .game-pan-overlay {
+        display: none;
+      }
+      .game-axis-hints {
+        display: none;
+      }
+    }
+
+    /* --- 右下：ミニマップ＋説明＋推測（1 パネル） --- */
     .floating-dock {
       position: absolute;
       right: var(--gutter);
@@ -232,17 +433,35 @@
     .floating-dock > * {
       pointer-events: auto;
     }
+    .game-map-panel {
+      width: min(22rem, calc(100vw - 2 * var(--gutter)));
+      padding: var(--space-2) var(--space-3) var(--space-2);
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      background: rgba(10, 12, 20, 0.78);
+      backdrop-filter: blur(20px) saturate(1.15);
+      -webkit-backdrop-filter: blur(20px) saturate(1.15);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
     .dock-controls {
-      width: min(20rem, calc(100vw - 2 * var(--gutter)));
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-lg);
+      width: 100%;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
     .hud-help {
-      margin: 0 0 var(--space-2);
+      margin: 0;
       font-size: 0.75rem;
       font-weight: 500;
       line-height: 1.55;
-      color: var(--text-dim);
+      color: rgba(226, 232, 240, 0.82);
     }
     .hud-help strong {
       color: var(--mint);
@@ -275,6 +494,49 @@
       display: flex;
       gap: var(--space-1);
       flex-wrap: wrap;
+    }
+    .btn-guess-main {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      min-height: 2.75rem;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border-radius: var(--radius-md);
+      color: #042018;
+      background: linear-gradient(168deg, #6ee7b7 0%, #34d399 42%, #0f766e 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.22) inset,
+        0 4px 22px rgba(16, 185, 129, 0.32);
+    }
+    .btn-guess-main svg {
+      flex-shrink: 0;
+    }
+    .btn-guess-main:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.28) inset,
+        0 8px 28px rgba(16, 185, 129, 0.38);
+    }
+    .btn-guess-main:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    .btn-guess-main:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.2);
+    }
+    .game-map-credit {
+      margin: 0;
+      font-size: 0.625rem;
+      line-height: 1.45;
+      color: rgba(248, 250, 252, 0.55);
+      text-align: center;
     }
     button {
       cursor: pointer;
@@ -327,11 +589,15 @@
     }
 
     /* --- ミニマップ枠：角丸・影・うっすら枠（ホバーで拡大＝transform のみ） --- */
+    .game-map-panel .map-minimap-shell {
+      width: 100%;
+      max-width: none;
+    }
     .map-minimap-shell {
       width: min(20rem, calc(100vw - 2 * var(--gutter)));
       height: 13.5rem;
       max-width: calc(100vw - 2 * var(--gutter));
-      border-radius: var(--radius-lg);
+      border-radius: var(--radius-md);
       overflow: hidden;
       position: relative;
       border: 1px solid rgba(255, 255, 255, 0.14);
@@ -378,7 +644,18 @@
       align-items: stretch;
       gap: 12px;
     }
+    .game-stage--map-reveal .game-map-panel {
+      flex: 1;
+      min-height: 0;
+      width: 100% !important;
+      max-width: none !important;
+      display: flex;
+      flex-direction: column;
+    }
     .game-stage--map-reveal .dock-controls {
+      display: none;
+    }
+    .game-stage--map-reveal .game-map-credit {
       display: none;
     }
     .game-stage--map-reveal .map-minimap-shell {
@@ -388,7 +665,7 @@
       height: auto !important;
       min-height: 48vh;
       transform: none !important;
-      border-radius: 16px;
+      border-radius: 12px;
     }
     .game-stage--map-reveal .map-minimap-shell:hover {
       transform: none;
@@ -442,17 +719,7 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
     }
     .map-minimap-label {
-      position: absolute;
-      top: var(--space-1);
-      left: var(--space-2);
-      z-index: 600;
-      font-family: var(--font-display);
-      font-size: 0.5625rem;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      color: rgba(255, 255, 255, 0.88);
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
-      pointer-events: none;
+      display: none;
     }
     #map {
       width: 100%;
@@ -521,14 +788,15 @@
         display: flex;
         order: 0;
       }
-      .floating-dock .map-minimap-shell {
+      .floating-dock .game-map-panel {
         order: 1;
-      }
-      .floating-dock .dock-controls {
-        order: 2;
       }
       .floating-dock:not(.floating-dock--map-open) .map-minimap-shell {
         display: none !important;
+      }
+      .game-map-panel {
+        width: 100%;
+        max-width: none;
       }
       .dock-controls {
         width: 100%;
@@ -547,7 +815,8 @@
       .hud-help {
         font-size: 0.6875rem;
       }
-      .btn-primary {
+      .btn-primary,
+      .btn-guess-main {
         min-height: 2.75rem;
         touch-action: manipulation;
       }
@@ -1744,12 +2013,10 @@
     }
     .header-auth-row {
       display: none;
-      align-items: center;
-      gap: 0.5rem;
       flex-shrink: 0;
     }
     .header-auth-row.header-auth-row--visible {
-      display: flex;
+      display: block;
     }
     .header-user-photo {
       width: 28px;
@@ -1776,6 +2043,12 @@
       color: var(--text-muted);
       cursor: pointer;
       font-family: var(--font-ui);
+    }
+    .header-auth-menu__panel .btn-header-logout {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 0.65rem;
+      font-size: 0.75rem;
     }
     .mp-duel-hud {
       display: none;
@@ -2087,19 +2360,39 @@
 
   <section id="gameScreen" class="game-screen" aria-hidden="true">
   <div class="game-viewport">
-    <header class="game-header glass">
+    <header class="game-header">
       <div class="game-header__inner">
         <div class="header-brand">
-          <span class="header-brand__title">Geo Explorer</span>
-          <span class="header-brand__note" title="学習用デモ。GeoGuessr は Anton Wallén 氏作。本デモは Mapillary + OSM。">
-            学習用デモ · Mapillary + OpenStreetMap
+          <span class="header-brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="1.4" />
+              <ellipse cx="16" cy="16" rx="5" ry="14" stroke="currentColor" stroke-width="1.1" />
+              <path d="M2 16h28" stroke="currentColor" stroke-width="1.1" />
+              <path d="M16 2c3 4 4.5 8.5 4.5 14S19 26 16 30" stroke="currentColor" stroke-width="1.1" />
+            </svg>
           </span>
+          <div class="header-brand__text">
+            <span class="header-brand__title">GEO EXPLORER</span>
+            <span class="header-brand__note" title="学習用デモ。GeoGuessr は Anton Wallén 氏作。本デモは Mapillary + OSM。">
+              学習用デモ ・ Mapillary + OpenStreetMap
+            </span>
+          </div>
         </div>
         <div class="game-header__aside">
-        <div id="headerAuthRow" class="header-auth-row">
-          <img id="headerUserPhoto" class="header-user-photo" alt="" width="28" height="28" />
-          <span id="headerUserName" class="header-user-name"></span>
-          <button type="button" class="btn-header-logout" id="btnAuthLogout">ログアウト</button>
+        <div class="header-user-cluster" id="headerUserCluster">
+          <details id="headerAuthRow" class="header-auth-row header-auth-menu">
+            <summary class="header-auth-menu__summary">
+              <img id="headerUserPhoto" class="header-user-photo" alt="" width="28" height="28" />
+              <span id="headerUserName" class="header-user-name"></span>
+              <span class="header-auth-menu__chev" aria-hidden="true">▼</span>
+            </summary>
+            <div class="header-auth-menu__panel">
+              <button type="button" class="btn-header-logout" id="btnAuthLogout">ログアウト</button>
+            </div>
+          </details>
+          <button type="button" class="btn-game-burger" id="btnGameMenu" aria-label="メニュー">
+            <span></span><span></span><span></span>
+          </button>
         </div>
         <div id="mpDuelHud" class="mp-duel-hud" aria-label="対戦状況">
           <div class="mp-duel-side">
@@ -2150,6 +2443,38 @@
         <div id="streetViewHost" class="street-view-host">
           <div id="mlyViewer"></div>
         </div>
+        <div class="game-pan-overlay" aria-hidden="true">
+          <div class="game-pan-overlay__transport">
+            <button type="button" tabindex="-1" aria-hidden="true">◀</button>
+            <button type="button" tabindex="-1" aria-hidden="true">▶</button>
+            <button type="button" tabindex="-1" aria-hidden="true">▶</button>
+            <button type="button" tabindex="-1" aria-hidden="true">■</button>
+          </div>
+          <div class="game-pan-overlay__mid">
+            <span class="game-pan-overlay__uturn" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M8 16 A6 6 0 1 1 14 10" stroke-linecap="round" />
+                <path d="M14 7v4h4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="game-pan-overlay__chevron" aria-hidden="true">▼</span>
+          </div>
+        </div>
+        <div class="game-axis-hints" aria-hidden="true">
+          <div class="game-axis-hint">
+            <span class="game-axis-hint__kbd">WASD</span>
+            <span>移動</span>
+          </div>
+          <div class="game-axis-hint">
+            <span class="game-axis-hint__kbd" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M5 9l7-5 7 5v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9z" />
+                <path d="M9 22V12h6v10" />
+              </svg>
+            </span>
+            <span>ドラッグで視点移動</span>
+          </div>
+        </div>
       </div>
 
       <aside class="floating-dock" id="floatingDock">
@@ -2162,22 +2487,31 @@
         >
           地図を表示
         </button>
-        <div class="dock-controls glass">
+        <div class="game-map-panel glass">
           <p class="hud-help">
-            <span class="hud-help__desk">ミニマップをクリックしてピン → <strong>推測する</strong>。シーン上で <strong>WASD</strong>（前後左右の接続画像へ）／マウスドラッグで見回し。</span>
+            <span class="hud-help__desk">ミニマップをクリックしてピンを推測するか、ショートカットキーで<strong>WASD</strong>（前後左右の接続画像へ）／<strong>マウスドラッグ</strong>で見回し。</span>
             <span class="hud-help__mob"><strong>地図を表示</strong>で地図を開き、地図をタップしてピン → <strong>推測する</strong>。シーンは指でドラッグ。</span>
           </p>
-          <div class="btn-row">
-            <button type="button" class="btn-primary" id="btnGuess" disabled>推測する</button>
+          <div
+            class="map-minimap-shell"
+            id="mapMinimapShell"
+            title="ミニマップ（タップでピン。狭い画面では「地図を表示」から開く）"
+          >
+            <span class="map-minimap-label">MAP</span>
+            <div id="map" tabindex="0" aria-label="推測用の地図。クリックでピン"></div>
           </div>
-        </div>
-        <div
-          class="map-minimap-shell glass"
-          id="mapMinimapShell"
-          title="ミニマップ（タップでピン。狭い画面では「地図を表示」から開く）"
-        >
-          <span class="map-minimap-label">MAP</span>
-          <div id="map" tabindex="0" aria-label="推測用の地図。クリックでピン"></div>
+          <div class="dock-controls">
+            <div class="btn-row">
+              <button type="button" class="btn-guess-main" id="btnGuess" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
+                  <circle cx="12" cy="10" r="2.2" fill="currentColor" stroke="none" />
+                </svg>
+                推測する
+              </button>
+            </div>
+          </div>
+          <p class="game-map-credit" id="gameMapCredit">Mapillary · OpenStreetMap</p>
         </div>
       </aside>
 
@@ -2765,7 +3099,7 @@
         throw new Error('Mapillary のアクセストークンが取得できませんでした。');
       }
       const bbox = buildBbox(lat, lng);
-      const fields = encodeURIComponent('id,geometry,computed_geometry');
+      const fields = encodeURIComponent('id,geometry,computed_geometry,captured_at,creator');
       const url =
         'https://graph.mapillary.com/images?access_token=' +
         encodeURIComponent(token) +
@@ -2799,8 +3133,42 @@
       return {
         id: String(pick.id),
         lat: pos.lat,
-        lng: pos.lng
+        lng: pos.lng,
+        captured_at: pick.captured_at || pick.created_at,
+        creator: pick.creator
       };
+    }
+
+    function updateGameMapCreditFromMeta(meta) {
+      const cred = el('gameMapCredit');
+      if (!cred) return;
+      if (!meta) {
+        cred.textContent = 'Mapillary · OpenStreetMap';
+        return;
+      }
+      const cr = meta.creator;
+      const username = cr && (cr.username || cr.name || cr.id);
+      const cap = meta.captured_at || meta.created_at;
+      let dateStr = '';
+      if (cap) {
+        const d = new Date(cap);
+        if (!isNaN(d.getTime())) {
+          dateStr =
+            d.getFullYear() +
+            '年' +
+            String(d.getMonth() + 1).padStart(2, '0') +
+            '月' +
+            String(d.getDate()).padStart(2, '0') +
+            '日';
+        }
+      }
+      if (username && dateStr) {
+        cred.textContent = 'Mapillary image by ' + username + ' · ' + dateStr;
+      } else if (username) {
+        cred.textContent = 'Mapillary image by ' + username;
+      } else {
+        cred.textContent = 'Mapillary · OpenStreetMap';
+      }
     }
 
     /**
@@ -2820,6 +3188,7 @@
           const img = await fetchRandomImageNear(lat, lng);
           if (img) {
             currentAnswer = img;
+            updateGameMapCreditFromMeta(img);
             el('imagePlaceholder').textContent = 'ストリートビューを読み込み中…';
             try {
               await ensureMapillaryMoveTo(img.id);
@@ -2886,6 +3255,7 @@
       }
       if (map) map.invalidateSize();
       setMobileMapDockOpen(false);
+      updateGameMapCreditFromMeta(null);
     }
 
     /** Leaflet 地図の初期化（OSM タイル） */
@@ -3186,12 +3556,14 @@
 
     function mpUpdateAuthHeader(user) {
       const row = el('headerAuthRow');
+      const cluster = el('headerUserCluster');
       const photo = el('headerUserPhoto');
       const name = el('headerUserName');
       const btnOut = el('btnAuthLogout');
       if (!row || !photo || !name || !btnOut) return;
       if (user) {
         row.classList.add('header-auth-row--visible');
+        if (cluster) cluster.classList.add('header-user-cluster--visible');
         photo.src = user.photoURL || '';
         photo.alt = user.displayName || '';
         photo.style.display = user.photoURL ? '' : 'none';
@@ -3199,6 +3571,8 @@
         btnOut.style.display = '';
       } else {
         row.classList.remove('header-auth-row--visible');
+        if (cluster) cluster.classList.remove('header-user-cluster--visible');
+        row.open = false;
         photo.src = '';
         photo.alt = '';
         name.textContent = '';
@@ -3576,7 +3950,7 @@
         encodeURIComponent(String(imageId)) +
         '?access_token=' +
         encodeURIComponent(token) +
-        '&fields=id,geometry,computed_geometry';
+        '&fields=id,geometry,computed_geometry,captured_at,creator';
       const res = await fetch(url);
       const raw = await res.text();
       if (!res.ok) throw new Error('Mapillary image HTTP ' + res.status + ' ' + raw.slice(0, 160));
@@ -3589,7 +3963,13 @@
       if (json.error) throw new Error(JSON.stringify(json.error));
       const pos = extractLngLatFromImage(json);
       if (!pos) throw new Error('no geometry for image');
-      return { id: String(json.id), lat: pos.lat, lng: pos.lng };
+      return {
+        id: String(json.id),
+        lat: pos.lat,
+        lng: pos.lng,
+        captured_at: json.captured_at || json.created_at,
+        creator: json.creator
+      };
     }
 
     async function versusLoadRoundImage(imageId) {
@@ -3598,6 +3978,7 @@
       el('imagePlaceholder').textContent = 'ストリートビューを読み込み中…';
       const img = await fetchImageByImageId(imageId);
       currentAnswer = img;
+      updateGameMapCreditFromMeta(img);
       await ensureMapillaryMoveTo(img.id);
       el('imagePlaceholder').style.display = 'none';
       el('loadingOverlay').classList.add('hidden');
@@ -4421,8 +4802,17 @@
       mpSetMatchLoading(false);
     });
     el('btnAuthLogout').addEventListener('click', function () {
+      const d = el('headerAuthRow');
+      if (d) d.open = false;
       mpSignOut();
     });
+    if (el('btnGameMenu') && el('headerAuthRow')) {
+      el('btnGameMenu').addEventListener('click', function (e) {
+        e.preventDefault();
+        const d = el('headerAuthRow');
+        if (d) d.open = !d.open;
+      });
+    }
     if (el('btnAuthLogoutHome')) {
       el('btnAuthLogoutHome').addEventListener('click', function () {
         mpSignOut();
