@@ -841,8 +841,16 @@
       60% { transform: scale(1.06); }
       to { opacity: 1; transform: scale(1); }
     }
-    #gameOverPanel .btn-primary {
+    #gameOverPanel .go-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
       margin-top: var(--space-3);
+      width: 100%;
+    }
+    #gameOverPanel .go-actions .btn-primary,
+    #gameOverPanel .go-actions .btn-secondary {
+      margin-top: 0;
       width: 100%;
     }
 
@@ -862,8 +870,9 @@
       inset: 0;
       z-index: 30;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
       padding: var(--gutter);
       padding-top: max(var(--gutter), env(safe-area-inset-top, 0px));
       padding-bottom: max(var(--gutter), env(safe-area-inset-bottom, 0px));
@@ -898,6 +907,8 @@
         -webkit-user-select: auto;
         user-select: auto;
       }
+      #homeScreen.home-screen .home-hero-card,
+      #homeScreen.home-screen .home-settings-btn,
       #homeScreen.home-screen .btn-play-mode,
       #homeScreen.home-screen .btn-start-game,
       #homeScreen.home-screen .btn-secondary,
@@ -907,64 +918,153 @@
       }
     }
 
-    .home-screen__bg {
+    .home-screen__layers {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(165deg, rgba(6, 7, 12, 0.92) 0%, rgba(10, 10, 18, 0.78) 50%, rgba(5, 5, 8, 0.94) 100%),
-        url("https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg") center / cover no-repeat;
-      filter: blur(18px) brightness(0.38) saturate(1.05);
-      transform: scale(1.06);
       pointer-events: none;
+      overflow: hidden;
     }
-    .home-screen__vignette {
+    .home-screen__layer {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 72% 58% at 50% 38%, transparent 0%, rgba(4, 4, 8, 0.55) 65%, rgba(2, 2, 5, 0.92) 100%);
-      pointer-events: none;
+    }
+    .home-screen__layer--stars {
+      background-color: #03050c;
+      background-image:
+        radial-gradient(1.5px 1.5px at 6% 10%, rgba(255, 255, 255, 0.55), transparent),
+        radial-gradient(1px 1px at 14% 6%, rgba(255, 255, 255, 0.4), transparent),
+        radial-gradient(1.2px 1.2px at 3% 28%, rgba(255, 255, 255, 0.45), transparent),
+        radial-gradient(1px 1px at 11% 42%, rgba(255, 255, 255, 0.35), transparent),
+        radial-gradient(1.5px 1.5px at 18% 18%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 8% 58%, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(1px 1px at 16% 72%, rgba(255, 255, 255, 0.38), transparent),
+        radial-gradient(1.2px 1.2px at 4% 82%, rgba(255, 255, 255, 0.42), transparent),
+        radial-gradient(1px 1px at 20% 88%, rgba(255, 255, 255, 0.32), transparent),
+        radial-gradient(ellipse 85% 70% at 0% 20%, rgba(25, 55, 95, 0.45), transparent 58%);
+    }
+    .home-screen__layer--earth {
+      background:
+        radial-gradient(ellipse 95% 90% at 96% 54%, rgba(40, 110, 95, 0.55) 0%, rgba(20, 70, 88, 0.28) 28%, transparent 52%),
+        radial-gradient(ellipse 75% 85% at 90% 48%, rgba(180, 200, 190, 0.14) 0%, rgba(60, 120, 100, 0.22) 22%, transparent 48%),
+        radial-gradient(ellipse 55% 50% at 82% 44%, rgba(30, 55, 45, 0.5) 0%, transparent 45%);
+    }
+    .home-screen__layer--sun {
+      background: radial-gradient(circle 22vmin at 94% 22%, rgba(255, 252, 235, 0.98) 0%, rgba(255, 230, 160, 0.45) 18%, rgba(255, 180, 80, 0.12) 38%, transparent 58%);
+      mix-blend-mode: screen;
+      opacity: 0.92;
+    }
+    .home-screen__layer--flare {
+      background: linear-gradient(118deg, transparent 42%, rgba(255, 245, 210, 0.08) 52%, rgba(255, 255, 255, 0.18) 56%, rgba(255, 245, 210, 0.06) 62%, transparent 72%);
+      mix-blend-mode: screen;
+      opacity: 0.75;
+    }
+    .home-screen__layer--atmos {
+      background: radial-gradient(ellipse 70% 55% at 88% 42%, rgba(120, 200, 255, 0.12), transparent 50%);
+      mix-blend-mode: screen;
+    }
+    .home-screen__layer--mountains {
+      inset: auto 0 0 0;
+      top: auto;
+      height: 42%;
+      background:
+        linear-gradient(to top, rgba(2, 4, 8, 0.97) 0%, rgba(6, 12, 18, 0.88) 22%, rgba(10, 18, 28, 0.35) 55%, transparent 100%),
+        radial-gradient(ellipse 140% 80% at 50% 100%, rgba(0, 0, 0, 0.85) 0%, transparent 55%);
+    }
+    .home-screen__layer--vignette {
+      background:
+        radial-gradient(ellipse 90% 70% at 70% 35%, transparent 0%, rgba(2, 3, 8, 0.35) 55%, rgba(1, 2, 6, 0.92) 100%),
+        linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, transparent 38%);
     }
     .home-screen__content {
       position: relative;
       z-index: 2;
+      flex: 1;
+      min-height: 0;
       width: 100%;
-      max-width: min(36rem, calc(100vw - 2 * var(--gutter)));
+      max-width: min(52rem, calc(100vw - 2 * var(--gutter)));
       margin: 0 auto;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
     }
-    .home-kicker {
-      margin: 0 0 var(--space-2);
-      font-family: var(--font-display);
-      font-size: 0.6875rem;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .home-title {
+    .home-brand {
       margin: 0 0 var(--space-3);
+      max-width: 42rem;
+    }
+    .home-brand__title {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.02em 0.12em;
       font-family: var(--font-display);
-      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-size: clamp(1.85rem, 5.5vw, 3.15rem);
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.02;
-      color: var(--text-primary);
-    }
-    .home-title span {
-      display: block;
-      margin-top: 0.15em;
-      font-size: 0.42em;
-      font-weight: 600;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: #f8fafc;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.12),
+        0 0 40px rgba(0, 40, 80, 0.35),
+        0 4px 24px rgba(0, 0, 0, 0.45);
+      line-height: 1.05;
     }
-    .home-sub {
-      margin: 0 auto var(--space-4);
-      max-width: 28rem;
-      font-size: 0.9375rem;
-      font-weight: 400;
-      line-height: 1.7;
-      color: var(--text-dim);
+    .home-brand__letters {
+      display: inline-block;
+    }
+    .home-brand__compass {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.05em;
+      height: 1.05em;
+      margin: 0 0.02em;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .home-brand__compass svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    }
+    .home-brand__tagline {
+      margin: var(--space-2) 0 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: clamp(0.75rem, 2.1vw, 0.875rem);
+      font-weight: 500;
+      color: rgba(248, 250, 252, 0.88);
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+    }
+    .home-brand__tagline > span:not(.home-brand__tagline-line) {
+      flex-shrink: 0;
+    }
+    .home-brand__tagline-line {
+      flex: 1;
+      min-width: 1.5rem;
+      max-width: 4rem;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    }
+    .home-brand__tagline-line:first-child {
+      max-width: 2.5rem;
+    }
+    .home-screen__main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      min-height: 0;
+    }
+    .home-screen__main #homeSoloBlock,
+    .home-screen__main #homeVersusBlock {
+      width: 100%;
+      max-width: min(32rem, 100%);
+      margin-inline: auto;
+      text-align: center;
     }
     .home-panel {
       margin: 0 auto var(--space-4);
@@ -1089,34 +1189,195 @@
       transform: translateY(0) scale(1);
     }
 
-    /* --- ホーム：プレイモード（ソロ / 1v1） --- */
+    /* --- ホーム：プレイモード（SOLO / 1v1 ヒーローカード） --- */
     .home-play-mode {
       display: flex;
-      gap: var(--space-2);
+      flex-direction: row;
+      gap: clamp(0.75rem, 2.5vw, 1.25rem);
       justify-content: center;
+      align-items: stretch;
       flex-wrap: wrap;
-      margin-bottom: var(--space-3);
+      width: 100%;
+      margin: var(--space-2) 0 0;
+    }
+    .home-hero-card {
+      position: relative;
+      cursor: pointer;
+      flex: 1 1 14rem;
+      max-width: 22rem;
+      min-height: 11.5rem;
+      padding: 0;
+      border: none;
+      border-radius: 1.15rem;
+      font-family: var(--font-ui);
+      text-align: center;
+      color: #f8fafc;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease, opacity 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .home-hero-card__inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 100%;
+      padding: 1.35rem 1.1rem 1.15rem;
+    }
+    .home-hero-card__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 0.15rem;
+      opacity: 0.98;
+    }
+    .home-hero-card__icon svg {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    .home-hero-card__title {
+      font-family: var(--font-display);
+      font-size: clamp(1.65rem, 4.5vw, 2.15rem);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      line-height: 1;
+    }
+    .home-hero-card__sub {
+      font-size: clamp(0.75rem, 2vw, 0.8125rem);
+      font-weight: 500;
+      line-height: 1.45;
+      max-width: 14rem;
+      opacity: 0.95;
+    }
+    .home-hero-card--solo {
+      background:
+        linear-gradient(165deg, rgba(15, 80, 72, 0.92) 0%, rgba(8, 45, 52, 0.96) 45%, rgba(4, 28, 36, 0.98) 100%),
+        repeating-linear-gradient(-12deg, transparent, transparent 7px, rgba(255, 255, 255, 0.02) 7px, rgba(255, 255, 255, 0.02) 8px);
+      box-shadow:
+        0 0 0 1px rgba(125, 211, 192, 0.25),
+        0 0 28px rgba(45, 212, 191, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+    .home-hero-card--solo .home-hero-card__sub {
+      color: rgba(224, 255, 250, 0.92);
+    }
+    .home-hero-card--versus {
+      background:
+        linear-gradient(168deg, rgba(22, 38, 72, 0.95) 0%, rgba(12, 22, 48, 0.98) 50%, rgba(6, 12, 32, 0.99) 100%),
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: auto, 18px 18px, 18px 18px;
+      box-shadow:
+        0 0 0 1px rgba(129, 161, 255, 0.22),
+        0 0 28px rgba(99, 102, 241, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .home-hero-card--versus .home-hero-card__sub {
+      color: rgba(186, 210, 255, 0.92);
+    }
+    .home-hero-card:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.04);
+    }
+    .home-hero-card:active {
+      transform: translateY(-1px);
+    }
+    .home-hero-card:focus-visible {
+      outline: 2px solid rgba(125, 211, 192, 0.85);
+      outline-offset: 3px;
+    }
+    .home-hero-card--versus:focus-visible {
+      outline-color: rgba(165, 180, 252, 0.9);
     }
     .btn-play-mode {
-      cursor: pointer;
-      flex: 1;
-      min-width: 8.5rem;
-      max-width: 14rem;
-      padding: 0.75rem 1rem;
-      font-family: var(--font-ui);
-      font-size: 0.875rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-strong);
-      background: rgba(0, 0, 0, 0.25);
-      color: var(--text-muted);
-      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      /* ヒーローカードと併用。未選択時はやや抑える */
+      opacity: 0.82;
     }
     .btn-play-mode--active {
-      background: var(--accent-soft);
-      color: var(--text-primary);
-      border-color: rgba(165, 166, 255, 0.45);
+      opacity: 1;
+    }
+    .home-hero-card--solo.btn-play-mode--active {
+      box-shadow:
+        0 0 0 2px rgba(125, 211, 192, 0.55),
+        0 0 36px rgba(45, 212, 191, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+    .home-hero-card--versus.btn-play-mode--active {
+      box-shadow:
+        0 0 0 2px rgba(165, 180, 252, 0.55),
+        0 0 36px rgba(99, 102, 241, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .home-screen__footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-2);
+      margin-top: auto;
+      padding-top: var(--space-3);
+    }
+    .home-settings-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.35);
+      color: rgba(248, 250, 252, 0.85);
+      font-family: var(--font-ui);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .home-settings-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .home-settings-btn:focus-visible {
+      outline: 2px solid var(--mint);
+      outline-offset: 2px;
+    }
+    .home-footer-quote {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+      margin: 0;
+      max-width: 22rem;
+      font-size: 0.6875rem;
+      line-height: 1.55;
+      color: rgba(248, 250, 252, 0.72);
+      text-align: right;
+    }
+    .home-footer-quote__globe {
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+      opacity: 0.85;
+    }
+    @media (max-width: 640px) {
+      .home-play-mode {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .home-hero-card {
+        max-width: none;
+        min-height: 9.5rem;
+      }
+      .home-screen__footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .home-footer-quote {
+        text-align: left;
+        max-width: none;
+      }
     }
     .home-versus-block {
       margin: 0 auto var(--space-4);
@@ -1588,52 +1849,124 @@
 <body>
   <!-- ホーム（最初に表示。ゲーム開始で非表示） -->
   <section id="homeScreen" class="home-screen" aria-label="ホーム">
-    <div class="home-screen__bg" aria-hidden="true"></div>
-    <div class="home-screen__vignette" aria-hidden="true"></div>
+    <div class="home-screen__layers" aria-hidden="true">
+      <div class="home-screen__layer home-screen__layer--stars"></div>
+      <div class="home-screen__layer home-screen__layer--earth"></div>
+      <div class="home-screen__layer home-screen__layer--sun"></div>
+      <div class="home-screen__layer home-screen__layer--flare"></div>
+      <div class="home-screen__layer home-screen__layer--atmos"></div>
+      <div class="home-screen__layer home-screen__layer--mountains"></div>
+      <div class="home-screen__layer home-screen__layer--vignette"></div>
+    </div>
     <div class="home-screen__content">
-      <p class="home-kicker">Mapillary × OpenStreetMap</p>
-      <h1 class="home-title">Geo Explorer<span>Location Quiz</span></h1>
-      <p class="home-sub">
-        世界のどこかのストリート風景を眺め、右下の地図にピンを立てて場所を当てよう。距離に応じて得点が入る、シンプルなルールです。
-      </p>
-      <div class="home-play-mode" role="group" aria-label="プレイモード">
-        <button type="button" class="btn-play-mode btn-play-mode--active" id="btnModeSolo">ソロプレイ</button>
-        <button type="button" class="btn-play-mode" id="btnModeVersus">1v1対戦</button>
-      </div>
-      <div id="homeSoloBlock">
-        <div class="home-panel glass">
-          <div>
-            <span class="home-panel__label" id="homeRoundsLegend">ラウンド数</span>
-            <div class="home-seg" role="radiogroup" aria-labelledby="homeRoundsLegend">
-              <label><input type="radio" name="roundsPick" value="3" /><span class="home-seg__face">3</span></label>
-              <label><input type="radio" name="roundsPick" value="5" checked /><span class="home-seg__face">5</span></label>
-              <label><input type="radio" name="roundsPick" value="10" /><span class="home-seg__face">10</span></label>
+      <header class="home-brand">
+        <h1 class="home-brand__title" aria-label="GEOEXPLORER">
+          <span class="home-brand__letters">GE</span>
+          <span class="home-brand__compass" aria-hidden="true">
+            <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="28" cy="28" r="26" stroke="rgba(255,255,255,0.55)" stroke-width="2" />
+              <circle cx="28" cy="28" r="18" fill="url(#homeCompassGlobeGrad)" stroke="rgba(0,40,80,0.5)" stroke-width="0.5" />
+              <path d="M28 6 L31 22 L28 18 L25 22 Z" fill="#e11d48" opacity="0.95" />
+              <path d="M28 50 L25 34 L28 38 L31 34 Z" fill="rgba(255,255,255,0.35)" />
+              <path d="M6 28 L22 25 L18 28 L22 31 Z" fill="rgba(255,255,255,0.25)" />
+              <path d="M50 28 L34 31 L38 28 L34 25 Z" fill="rgba(255,255,255,0.25)" />
+              <defs>
+                <radialGradient id="homeCompassGlobeGrad" cx="35%" cy="35%" r="70%">
+                  <stop offset="0%" stop-color="#38bdf8" />
+                  <stop offset="45%" stop-color="#0c4a6e" />
+                  <stop offset="100%" stop-color="#022c22" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </span>
+          <span class="home-brand__letters">EXPLORER</span>
+        </h1>
+        <p class="home-brand__tagline">
+          <span class="home-brand__tagline-line"></span>
+          <span>ランダムな場所に飛ばされ、その場所を推測せよ</span>
+          <span class="home-brand__tagline-line"></span>
+        </p>
+      </header>
+      <div class="home-screen__main">
+        <div class="home-play-mode" role="group" aria-label="プレイモード">
+          <button type="button" class="home-hero-card home-hero-card--solo btn-play-mode btn-play-mode--active" id="btnModeSolo">
+            <span class="home-hero-card__inner">
+              <span class="home-hero-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="24" cy="42" rx="8" ry="3" fill="rgba(255,255,255,0.2)" />
+                  <path d="M24 8 C17 8 12 13 12 20 C12 28 24 40 24 40 C24 40 36 28 36 20 C36 13 31 8 24 8 Z" fill="currentColor" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
+                  <circle cx="24" cy="20" r="5" fill="rgba(15,23,42,0.35)" />
+                </svg>
+              </span>
+              <span class="home-hero-card__title">SOLO</span>
+              <span class="home-hero-card__sub">世界のどこかで一人で挑戦</span>
+            </span>
+          </button>
+          <button type="button" class="home-hero-card home-hero-card--versus btn-play-mode" id="btnModeVersus">
+            <span class="home-hero-card__inner">
+              <span class="home-hero-card__icon" aria-hidden="true">
+                <svg viewBox="0 0 72 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 10 C12 6 15 3 19 3 C23 3 26 6 26 10 C26 14 23 17 19 17 C15 17 12 14 12 10 Z M8 32 C8 26 12 22 18 22 H20 C22 22 24 23 25 25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                  <text x="36" y="25" text-anchor="middle" fill="currentColor" font-family="Outfit, system-ui, sans-serif" font-size="12" font-weight="800">vs</text>
+                  <path d="M60 10 C60 6 57 3 53 3 C49 3 46 6 46 10 C46 14 49 17 53 17 C57 17 60 14 60 10 Z M64 32 C64 26 60 22 54 22 H52 C50 22 48 23 47 25" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="home-hero-card__title">1v1</span>
+              <span class="home-hero-card__sub">他のプレイヤーと対戦</span>
+            </span>
+          </button>
+        </div>
+        <div id="homeSoloBlock">
+          <div class="home-panel glass">
+            <div>
+              <span class="home-panel__label" id="homeRoundsLegend">ラウンド数</span>
+              <div class="home-seg" role="radiogroup" aria-labelledby="homeRoundsLegend">
+                <label><input type="radio" name="roundsPick" value="3" /><span class="home-seg__face">3</span></label>
+                <label><input type="radio" name="roundsPick" value="5" checked /><span class="home-seg__face">5</span></label>
+                <label><input type="radio" name="roundsPick" value="10" /><span class="home-seg__face">10</span></label>
+              </div>
+            </div>
+            <div class="home-score-row">
+              <span class="home-panel__label">ハイスコア</span>
+              <span class="home-score-row__value" id="homeHighScore">0</span>
             </div>
           </div>
-          <div class="home-score-row">
-            <span class="home-panel__label">ハイスコア</span>
-            <span class="home-score-row__value" id="homeHighScore">0</span>
+          <button type="button" class="btn-start-game" id="btnStartGame">ゲームを始める</button>
+        </div>
+        <div id="homeVersusBlock" class="home-versus-block" style="display: none">
+          <div id="homeVersusUserCard" class="home-versus-user" style="display: none">
+            <img id="homeVersusUserPhoto" alt="" width="36" height="36" />
+            <span id="homeVersusUserName"></span>
+            <button type="button" class="btn-secondary" id="btnAuthLogoutHome">ログアウト</button>
+          </div>
+          <p id="homeMatchLoading" class="home-match-loading" aria-live="polite">対戦相手を探しています…</p>
+          <div class="home-versus-match-actions">
+            <button type="button" class="btn-start-game" id="btnMpStartMatch">
+              <span id="homeVersusGoogleIcon" aria-hidden="true" style="display: none; vertical-align: middle; margin-right: 0.35rem">
+                <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.42 32.655 29.248 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.673-3.28-11.303-7.907l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+              </span>
+              <span id="homeVersusMatchLabel">Googleでログインして対戦</span>
+            </button>
+            <button type="button" class="btn-cancel-matchmaking" id="btnMpQueueCancel">マッチングをキャンセル</button>
           </div>
         </div>
-        <button type="button" class="btn-start-game" id="btnStartGame">ゲームを始める</button>
       </div>
-      <div id="homeVersusBlock" class="home-versus-block" style="display: none">
-        <div id="homeVersusUserCard" class="home-versus-user" style="display: none">
-          <img id="homeVersusUserPhoto" alt="" width="36" height="36" />
-          <span id="homeVersusUserName"></span>
-          <button type="button" class="btn-secondary" id="btnAuthLogoutHome">ログアウト</button>
-        </div>
-        <p id="homeMatchLoading" class="home-match-loading" aria-live="polite">対戦相手を探しています…</p>
-        <div class="home-versus-match-actions">
-          <button type="button" class="btn-start-game" id="btnMpStartMatch">
-            <span id="homeVersusGoogleIcon" aria-hidden="true" style="display: none; vertical-align: middle; margin-right: 0.35rem">
-              <svg width="18" height="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303C33.42 32.655 29.248 36 24 36c-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="m6.306 14.691 6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.673-3.28-11.303-7.907l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
-            </span>
-            <span id="homeVersusMatchLabel">Googleでログインして対戦</span>
-          </button>
-          <button type="button" class="btn-cancel-matchmaking" id="btnMpQueueCancel">マッチングをキャンセル</button>
-        </div>
-      </div>
+      <footer class="home-screen__footer">
+        <button type="button" class="home-settings-btn" id="btnHomeSettings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3.2" />
+            <path d="M12 1v2.2M12 20.8V23M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M1 12h2.2M20.8 12H23M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
+          </svg>
+          設定
+        </button>
+        <p class="home-footer-quote">
+          <svg class="home-footer-quote__globe" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+          </svg>
+          <span>地球上のすべての場所が、あなたの探索を待っている。</span>
+        </p>
+      </footer>
     </div>
   </section>
 
@@ -1780,7 +2113,10 @@
       <div class="go-title">Game over</div>
       <div class="go-score-label" id="gameOverRoundLabel">5 ラウンド合計</div>
       <div class="go-final-line"><strong id="finalScore">0</strong><span class="go-points-suffix"> 点</span></div>
-      <button type="button" class="btn-primary" id="btnRestart">もう一度</button>
+      <div class="go-actions">
+        <button type="button" class="btn-primary" id="btnRestart">もう一度</button>
+        <button type="button" class="btn-secondary" id="btnSoloHome">ホームへ</button>
+      </div>
     </div>
 
     <div id="versusOppDoneBanner" class="versus-opp-banner" aria-live="polite">相手は回答済み！</div>
@@ -2146,10 +2482,11 @@
 
     /**
      * 距離（m）から 0〜5000 のスコア（近いほど高い）
+     * 本家 GeoGuessr は S=5000*exp(-10*d/D)（d=誤差m、D=マップ矩形の対角m）で D がマップ依存。
+     * ここは全世界ランダムに合わせ D≈15,000km とみなすと -10/D=-1/1_500_000 と同値になる固定式。
      */
     function scoreFromDistanceMeters(d) {
       if (d <= 0) return MAX_ROUND_SCORE;
-      // 指数減衰：地球規模でも 0 に近づく
       const raw = MAX_ROUND_SCORE * Math.exp(-d / 1_500_000);
       return Math.max(0, Math.round(raw));
     }
@@ -2619,6 +2956,18 @@
       syncRoundTotalUi();
       resetRoundMapState();
       loadRoundImage().catch(() => {});
+    }
+
+    /** ソロ終了後：ホームへ戻る（onRestart のロジックは変更しない） */
+    function soloReturnToHome() {
+      gameMode = 'solo';
+      resetRoundMapState();
+      mpHideDuelHud();
+      el('gameScreen').classList.remove('game-screen--active');
+      el('gameScreen').setAttribute('aria-hidden', 'true');
+      el('homeScreen').classList.remove('home-screen--hidden');
+      el('homeScreen').setAttribute('aria-hidden', 'false');
+      refreshHomeHighScore();
     }
 
     async function startGameFromHome() {
@@ -3908,6 +4257,9 @@
       else onNextRound();
     });
     el('btnRestart').addEventListener('click', onRestart);
+    if (el('btnSoloHome')) {
+      el('btnSoloHome').addEventListener('click', soloReturnToHome);
+    }
     if (el('btnVersusSeeFinal')) {
       el('btnVersusSeeFinal').addEventListener('click', function () {
         if (gameMode === 'versus1v1') versusMpOnNext();
@@ -3959,6 +4311,11 @@
     if (el('btnAuthLogoutHome')) {
       el('btnAuthLogoutHome').addEventListener('click', function () {
         mpSignOut();
+      });
+    }
+    if (el('btnHomeSettings')) {
+      el('btnHomeSettings').addEventListener('click', function () {
+        alert('設定画面は準備中です。');
       });
     }
     el('btnVersusFinalHome').addEventListener('click', versusLeaveToHome);
